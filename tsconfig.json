@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "ESNext",
 		"lib": [
 			"dom",
 			"dom.iterable",
@@ -37,6 +37,6 @@
 	],
 	"exclude": [
 		"node_modules",
-		"supabase/functions/_lib"
+		"supabase/functions/_lib/markdown-parser.ts"
 	]
 }
