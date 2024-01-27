@@ -17,8 +17,7 @@ $$;
 create policy "Authenticated users can upload files"
 on storage.objects for insert to authenticated with check (
   bucket_id = 'files' and
-    owner = auth.uid() and
-    private.uuid_or_null(path_tokens[1]) is not null
+    owner = auth.uid() 
 );
 
 create policy "Users can view their own files"
