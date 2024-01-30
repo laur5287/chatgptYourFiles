@@ -40,7 +40,7 @@ export default function FilesPage() {
 							const { error } = await supabase.storage
 								.from('files')
 								.upload(
-									`${selectedFile.name}`,
+									`${crypto.randomUUID()}/${selectedFile.name}`,
 									selectedFile
 								);
 
