@@ -1,13 +1,33 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 export default function FilesPage() {
 	const supabase = createClientComponentClient();
+	const data = {
+		bucket_id: 'your_bucket_id',
+		name: 'example.txt',
+		owner: 'owner_user_id',
+		metadata: { key: 'value' },
+		path_tokens: ['folder', 'example.txt'],
+		version: '1.0',
+		owner_id: 'owner_user_id',
+	};
+	const handleClick = async () => {
+		const { data, error } = await supabase.from('documents').select()
+		console.log(data, error)
+
+	}
+
+
+
+
 	const router = useRouter();
 
 	const { data: documents } = useQuery(['files'], async () => {
@@ -29,6 +49,7 @@ export default function FilesPage() {
 	return (
 		<div className="flex flex-col items-stretch max-w-6xl gap-8 m-4 sm:m-10 grow">
 			<div className="flex flex-col items-center justify-center h-40 pb-8 border-b">
+				<Button onClick={handleClick}>Click me</Button>
 				<Input
 					type="file"
 					name="file"
@@ -37,12 +58,15 @@ export default function FilesPage() {
 						const selectedFile = e.target.files?.[0];
 
 						if (selectedFile) {
-							const { error } = await supabase.storage
-								.from('files')
-								.upload(
-									`${crypto.randomUUID()}/${selectedFile.name}`,
-									selectedFile
-								);
+
+
+							const { data, error } = await supabase
+								.from('documents')
+								.insert(selectedFile.name)
+							// .upload(
+							// 	`${crypto.randomUUID()}/${selectedFile.name}`,
+							// 	selectedFile
+							// );
 
 							if (error) {
 								toast({
